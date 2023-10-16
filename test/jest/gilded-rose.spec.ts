@@ -50,4 +50,23 @@ describe("Gilded Rose", () => {
       new Item("Backstage passes to a TAFKAL80ETC concert", -5, 0),
     ]);
   });
+
+  it("should have the correct updates after 100 days", () => {
+    const gildedRose = new GildedRose(items());
+
+    for (let i = 0; i < 100; i++) {
+      gildedRose.updateQuality();
+    }
+
+    expect(gildedRose.items).toEqual([
+      new Item("+5 Dexterity Vest", -90, 0),
+      new Item("Aged Brie", -98, 50),
+      new Item("Elixir of the Mongoose", -95, 0),
+      new Item("Sulfuras, Hand of Ragnaros", 0, 80),
+      new Item("Sulfuras, Hand of Ragnaros", -1, 80),
+      new Item("Backstage passes to a TAFKAL80ETC concert", -85, 0),
+      new Item("Backstage passes to a TAFKAL80ETC concert", -90, 0),
+      new Item("Backstage passes to a TAFKAL80ETC concert", -95, 0),
+    ]);
+  });
 });
