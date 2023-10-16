@@ -33,15 +33,14 @@ const aged: ItemUpdater = ({ name, sellIn, quality }) =>
 
 // Quality increases by 2 when there are 10 days or less and by 3 when there are 5 days or less but
 // Quality drops to 0 after the event
+const eventDegradationDelta = (sellIn: number) =>
+  sellIn > 10 ? 1 : sellIn > 5 ? 2 : sellIn > 0 ? 3 : 0;
+
 const eventTicket: ItemUpdater = ({ name, sellIn, quality }) =>
   new Item(
     name,
     sellIn - 1,
-    sellIn > 0
-      ? constrainQuality(
-          quality + (sellIn > 10 ? 1 : sellIn > 5 ? 2 : sellIn > 0 ? 3 : 0)
-        )
-      : 0
+    sellIn > 0 ? constrainQuality(quality + eventDegradationDelta(sellIn)) : 0
   );
 
 // Conjured items degrade in Quality twice as fast as normal items
