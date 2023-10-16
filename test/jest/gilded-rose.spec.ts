@@ -12,6 +12,7 @@ describe("Gilded Rose", () => {
     new Item("Backstage passes to a TAFKAL80ETC concert", 15, 20),
     new Item("Backstage passes to a TAFKAL80ETC concert", 10, 49),
     new Item("Backstage passes to a TAFKAL80ETC concert", 5, 49),
+    new Item("Conjured Mana Cake", 3, 6),
   ];
 
   it("should have the correct updates after 5 days", () => {
@@ -30,6 +31,7 @@ describe("Gilded Rose", () => {
       new Item("Backstage passes to a TAFKAL80ETC concert", 10, 25),
       new Item("Backstage passes to a TAFKAL80ETC concert", 5, 50),
       new Item("Backstage passes to a TAFKAL80ETC concert", 0, 50),
+      new Item("Conjured Mana Cake", -2, 0),
     ]);
   });
 
@@ -49,6 +51,7 @@ describe("Gilded Rose", () => {
       new Item("Backstage passes to a TAFKAL80ETC concert", 5, 35),
       new Item("Backstage passes to a TAFKAL80ETC concert", 0, 50),
       new Item("Backstage passes to a TAFKAL80ETC concert", -5, 0),
+      new Item("Conjured Mana Cake", -7, 0),
     ]);
   });
 
@@ -68,6 +71,7 @@ describe("Gilded Rose", () => {
       new Item("Backstage passes to a TAFKAL80ETC concert", -85, 0),
       new Item("Backstage passes to a TAFKAL80ETC concert", -90, 0),
       new Item("Backstage passes to a TAFKAL80ETC concert", -95, 0),
+      new Item("Conjured Mana Cake", -97, 0),
     ]);
   });
 });
