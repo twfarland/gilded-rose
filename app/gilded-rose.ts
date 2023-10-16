@@ -42,61 +42,77 @@ legendary item and as such its Quality is 80 and it never alters.
 
 */
 
+/* 
+Assumptions:
+  Each item has only one updating rule, i.e. it can't be legendary and aged at the same time.
+
+  Since we can't modify the Item class, we have to rely on the item name, 
+  looking at the string to infer the updating rule. This is heuristic and brittle, but
+  it's the only option we have without modifying the Item class.
+
+
+*/
+
+type Updater = (item: Item) => Item;
+
 export class GildedRose {
   constructor(public items: Item[] = []) {
     this.items = items;
   }
 
-  updateQuality() {
-    for (const item of this.items) {
-      if (
-        item.name != "Aged Brie" &&
-        item.name != "Backstage passes to a TAFKAL80ETC concert"
-      ) {
-        if (item.quality > 0) {
-          if (item.name != "Sulfuras, Hand of Ragnaros") {
-            item.quality = item.quality - 1;
-          }
-        }
-      } else {
-        if (item.quality < 50) {
-          item.quality = item.quality + 1;
-          if (item.name == "Backstage passes to a TAFKAL80ETC concert") {
-            if (item.sellIn < 11) {
-              if (item.quality < 50) {
-                item.quality = item.quality + 1;
-              }
-            }
-            if (item.sellIn < 6) {
-              if (item.quality < 50) {
-                item.quality = item.quality + 1;
-              }
-            }
-          }
+  updateItemQuality(item: Item) {
+    if (
+      item.name != "Aged Brie" &&
+      item.name != "Backstage passes to a TAFKAL80ETC concert"
+    ) {
+      if (item.quality > 0) {
+        if (item.name != "Sulfuras, Hand of Ragnaros") {
+          item.quality = item.quality - 1;
         }
       }
-      if (item.name != "Sulfuras, Hand of Ragnaros") {
-        item.sellIn = item.sellIn - 1;
-      }
-      if (item.sellIn < 0) {
-        if (item.name != "Aged Brie") {
-          if (item.name != "Backstage passes to a TAFKAL80ETC concert") {
-            if (item.quality > 0) {
-              if (item.name != "Sulfuras, Hand of Ragnaros") {
-                item.quality = item.quality - 1;
-              }
+    } else {
+      if (item.quality < 50) {
+        item.quality = item.quality + 1;
+        if (item.name == "Backstage passes to a TAFKAL80ETC concert") {
+          if (item.sellIn < 11) {
+            if (item.quality < 50) {
+              item.quality = item.quality + 1;
             }
-          } else {
-            item.quality = item.quality - item.quality;
           }
-        } else {
-          if (item.quality < 50) {
-            item.quality = item.quality + 1;
+          if (item.sellIn < 6) {
+            if (item.quality < 50) {
+              item.quality = item.quality + 1;
+            }
           }
         }
       }
     }
+    if (item.name != "Sulfuras, Hand of Ragnaros") {
+      item.sellIn = item.sellIn - 1;
+    }
+    if (item.sellIn < 0) {
+      if (item.name != "Aged Brie") {
+        if (item.name != "Backstage passes to a TAFKAL80ETC concert") {
+          if (item.quality > 0) {
+            if (item.name != "Sulfuras, Hand of Ragnaros") {
+              item.quality = item.quality - 1;
+            }
+          }
+        } else {
+          item.quality = item.quality - item.quality;
+        }
+      } else {
+        if (item.quality < 50) {
+          item.quality = item.quality + 1;
+        }
+      }
+    }
+  }
 
+  updateQuality() {
+    for (const item of this.items) {
+      this.updateItemQuality(item);
+    }
     return this.items;
   }
 }
