@@ -9,9 +9,9 @@ const MIN_QUALITY = 0;
 const constrainQuality = (quality: number) =>
   Math.max(MIN_QUALITY, Math.min(MAX_QUALITY, quality));
 
+// Once sell by is passed, quality degrades twice as fast
 const degradationDelta = (sellIn: number) => (sellIn <= 0 ? 2 : 1);
 
-// Once sell by is passed, quality degrades twice as fast
 const normal: ItemUpdater = (item) =>
   new Item(
     item.name,
@@ -23,7 +23,7 @@ const normal: ItemUpdater = (item) =>
 const legendary: ItemUpdater = (item) => item;
 
 // For aged items, quality increases the older it gets
-// Once sell by is passed, quality improves twice as fast (cheese gets more funky faster)
+// Once sell by is passed, quality improves twice as fast (cheese gets funkier faster)
 const aged: ItemUpdater = ({ name, sellIn, quality }) =>
   new Item(
     name,
