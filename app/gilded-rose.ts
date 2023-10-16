@@ -1,5 +1,5 @@
 import { Item } from "./item";
-import { getItemUpdaterByItemName } from "./item-updater";
+import { getItemUpdaterByItemName, updateItem } from "./item-updater";
 
 /*
 ======================================
@@ -58,10 +58,7 @@ export class GildedRose {
   }
 
   updateQuality() {
-    this.items = this.items.map((item) => {
-      const updater = getItemUpdaterByItemName(item.name);
-      return updater(item);
-    });
+    this.items = this.items.map(updateItem);
     return this.items;
   }
 }

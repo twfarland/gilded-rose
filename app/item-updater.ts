@@ -50,3 +50,8 @@ export function getItemUpdaterByItemName(name: Item["name"]): ItemUpdater {
       return normal;
   }
 }
+
+export function updateItem(item: Item): Item {
+  const updater = getItemUpdaterByItemName(item.name);
+  return updater(item);
+}
