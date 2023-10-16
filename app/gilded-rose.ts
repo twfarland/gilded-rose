@@ -1,5 +1,5 @@
 import { Item } from "./item";
-import { getItemUpdaterByItemName, updateItem } from "./item-updater";
+import { updateItem } from "./item-updater";
 
 /*
 ======================================
@@ -41,9 +41,6 @@ for you).
 Just for clarification, an item can never have its Quality increase above 50, however "Sulfuras" is a
 legendary item and as such its Quality is 80 and it never alters.
 
-*/
-
-/* 
 Assumptions:
   Each item has only one updating rule, i.e. it can't be legendary and aged at the same time.
 
