@@ -1,9 +1,7 @@
 import { Item } from "./item";
 
 export class GildedRose {
-  items: Array<Item>;
-
-  constructor(items = [] as Array<Item>) {
+  constructor(public items: Item[] = []) {
     this.items = items;
   }
 
