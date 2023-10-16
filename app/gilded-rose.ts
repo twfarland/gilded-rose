@@ -72,11 +72,12 @@ const normal: Updater = (item) =>
 const legendary: Updater = (item) => item;
 
 // For aged items, quality increases the older it gets
-const aged: Updater = (item) =>
-  new Item(item.name, item.sellIn - 1, constrainQuality(item.quality + 1));
+// Once sell by is passed, quality improves twice as fast (cheese gets more funky faster)
+const aged: Updater = ({ name, sellIn, quality }) =>
+  new Item(name, sellIn - 1, constrainQuality(quality + (sellIn <= 0 ? 2 : 1)));
 
 // Quality increases by 2 when there are 10 days or less and by 3 when there are 5 days or less but
-// Quality drops to 0 after the concert
+// Quality drops to 0 after the event
 const eventTicket: Updater = ({ name, sellIn, quality }) =>
   new Item(
     name,
@@ -106,59 +107,11 @@ export class GildedRose {
     this.items = items;
   }
 
-  updateItemQuality(item: Item) {
-    if (
-      item.name != "Aged Brie" &&
-      item.name != "Backstage passes to a TAFKAL80ETC concert"
-    ) {
-      if (item.quality > 0) {
-        if (item.name != "Sulfuras, Hand of Ragnaros") {
-          item.quality = item.quality - 1;
-        }
-      }
-    } else {
-      if (item.quality < 50) {
-        item.quality = item.quality + 1;
-        if (item.name == "Backstage passes to a TAFKAL80ETC concert") {
-          if (item.sellIn < 11) {
-            if (item.quality < 50) {
-              item.quality = item.quality + 1;
-            }
-          }
-          if (item.sellIn < 6) {
-            if (item.quality < 50) {
-              item.quality = item.quality + 1;
-            }
-          }
-        }
-      }
-    }
-    if (item.name != "Sulfuras, Hand of Ragnaros") {
-      item.sellIn = item.sellIn - 1;
-    }
-    if (item.sellIn < 0) {
-      if (item.name != "Aged Brie") {
-        if (item.name != "Backstage passes to a TAFKAL80ETC concert") {
-          if (item.quality > 0) {
-            if (item.name != "Sulfuras, Hand of Ragnaros") {
-              item.quality = item.quality - 1;
-            }
-          }
-        } else {
-          item.quality = item.quality - item.quality;
-        }
-      } else {
-        if (item.quality < 50) {
-          item.quality = item.quality + 1;
-        }
-      }
-    }
-  }
-
   updateQuality() {
-    for (const item of this.items) {
-      this.updateItemQuality(item);
-    }
+    this.items = this.items.map((item) => {
+      const updater = getUpdaterByItemName(item.name);
+      return updater(item);
+    });
     return this.items;
   }
 }
